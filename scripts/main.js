@@ -7,12 +7,24 @@ document.onmousemove = function (e) {
   cursorX = e.clientX - wrapperDiv.offsetLeft;
   cursorY = e.clientY - wrapperDiv.offsetTop;
 
-  placeStoneHover(cursorX, cursorY, id);
+  placeStoneHover(cursorX, cursorY);
 }
 
 document.onclick = function (e) {
-  placeStone(Math.floor(cursorX / 33), Math.floor(cursorY / 33), id);
+  var x_grid = Math.floor(cursorX / 33);
+  var y_grid = Math.floor(cursorY / 33);
 
-  if (id == 1) id = 2;
-  else if (id == 2) id = 1;
+  if (grid[y_grid][x_grid] == 0) {
+    placeStone(x_grid, y_grid);
+    if (id == 1) id = 2;
+    else if (id == 2) id = 1;
+  }
+
+/*---AI----*/
+  zetaGo();
+/*---------*/
+
+
+  
+
 }

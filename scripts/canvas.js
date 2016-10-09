@@ -16,16 +16,23 @@ function init() {
     ctx = canvas.getContext("2d");
 }
 
-function placeStone(x_grid, y_grid, id) {
+function placeStone(x_grid, y_grid) {
   grid[y_grid][x_grid] = id;
+  updateGrid();
 }
 
 //only for physical input
-function placeStoneHover(x_px, y_px, id) {
-  updateGrid();
-  drawStone(Math.floor(x_px / 33), Math.floor(y_px / 33), id);
+function placeStoneHover(x_px, y_px) {
+  var x_grid = Math.floor(x_px / 33);
+  var y_grid = Math.floor(y_px / 33);
+
+  if (grid[y_grid][x_grid] == 0) {
+    updateGrid();
+    drawStone(x_grid, y_grid, id);
+  }
 }
 
+//draw stone on current canvas
 function drawStone(x_grid, y_grid, id) {
   if (id == 0) return;
 
