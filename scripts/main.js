@@ -15,7 +15,7 @@ document.onclick = function (e) {
   var x_grid = Math.floor(cursorX / 33);
   var y_grid = Math.floor(cursorY / 33);
 
-  //for AI vs human
+  /*AI vs human (human always first for now)*/
   if (x_grid >= 0 && y_grid >= 0 && x_grid <= 18 && y_grid <= 18 && grid[y_grid][x_grid] == 0) {
     placeStone(x_grid, y_grid);
     (id == 1)? id = 2: id = 1;
@@ -27,17 +27,18 @@ document.onclick = function (e) {
     (id == 1)? id = 2: id = 1;
   }
 
-  //for human vs human
+  /*human vs human*/
   // if (x_grid >= 0 && y_grid >= 0 && x_grid <= 18 && y_grid <= 18 && grid[y_grid][x_grid] == 0) {
   //   placeStone(x_grid, y_grid);
   //   (id == 1)? id = 2: id = 1;
   // }
 
+  /*AI vs AI 調整中*/
+  // betaGo();
+  // zetaGo();
+
   var winner = getWinner();
-  if (winner == 1) {
-    alert("black won");
-  }
-  else if (winner == 2) {
-    alert("white won");
+  if (winner != 0) {
+    (winner == 1)? alert("black won"): alert("white won");
   }
 }
