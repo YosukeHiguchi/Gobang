@@ -24,7 +24,6 @@ document.onclick = function (e) {
   zetaGo();
 /*---------*/
 
-
-  
+  console.log(isGameOver());
 
 }
