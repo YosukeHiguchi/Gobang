@@ -1,0 +1,17 @@
+#wrapper {
+  top: 0px;
+  left: 0px;
+  width: 627px;
+  height: 627px;
+}
+#goban {
+  background: url("../img/goban-large.png");
+  width: inherit;
+  height: inherit;
+  position: absolute;
+}
+#canvas {
+  width: inherit;
+  height: inherit;
+  position: absolute;
+}
