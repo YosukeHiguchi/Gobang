@@ -20,12 +20,14 @@ var grid = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 ];
 
-function dispGrid() {
+//console grid
+function dumpGrid() {
   for (var i = 0; i < 19; i++) {
     console.log(i + "\n" + grid[i]);
   }
 }
 
+//draw stone based on grid
 function updateGrid() {
   ctx.clearRect(0, 0, W, H);
   for (var y_grid = 0; y_grid < 19; y_grid++) {

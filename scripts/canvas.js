@@ -4,27 +4,24 @@ var W = 627, H = 627;
 
 /* coordinate
 * (16, 16)      (610, 16)
-*        594[19] * 594[19] (offset 33)
+
+*    594[19] * 594[19] (offset 33)
+
 * (16, 610)     (610, 610)
 */
 
 function init() {
   var canvas = document.getElementById("canvas");
-  if (canvas.getContext) {
+  if (canvas.getContext)
     ctx = canvas.getContext("2d");
-
-    main();
-  }
 }
 
 function placeStone(x_grid, y_grid, id) {
   grid[y_grid][x_grid] = id;
-  dispGrid();
-  drawStone(x_grid, y_grid, id);
 }
 
+//only for physical input
 function placeStoneHover(x_px, y_px, id) {
-  ctx.clearRect(0, 0, W, H);
   updateGrid();
   drawStone(Math.floor(x_px / 33), Math.floor(y_px / 33), id);
 }
