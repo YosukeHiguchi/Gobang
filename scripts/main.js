@@ -7,7 +7,7 @@ function main() {
 
   if (clicked) {
     placeStone(Math.floor(cursorX / 33), Math.floor(cursorY / 33), id);
-    console.log("put at " + Math.floor(cursorX / 33) + " " + Math.floor(cursorY / 33));
+    console.log("put at " + Math.floor(cursorY / 33) + " " + Math.floor(cursorX / 33));
     clicked = 0;
   }
 }

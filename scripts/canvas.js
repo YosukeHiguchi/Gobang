@@ -18,31 +18,32 @@ function init() {
 }
 
 function placeStone(x_grid, y_grid, id) {
-  
+  grid[y_grid][x_grid] = id;
+  dispGrid();
   drawStone(x_grid, y_grid, id);
 }
 
 function placeStoneHover(x_px, y_px, id) {
   ctx.clearRect(0, 0, W, H);
+  updateGrid();
   drawStone(Math.floor(x_px / 33), Math.floor(y_px / 33), id);
 }
 
 function drawStone(x_grid, y_grid, id) {
+  if (id == 0) return;
+
   //coordinate in pixel
   var x_px = 16 + 33 * x_grid;
   var y_px = 16 + 33 * y_grid;
 
   //1: black 2:white
-  if (id == 1) {
-    var grad = ctx.createRadialGradient(x_px - 6, y_px - 6, 0, x_px, y_px, 18);
-    grad.addColorStop(0, "#FFFFFF");
-    grad.addColorStop(1, "#000000");
-  }
-  else if (id == 2) {
-    var grad = ctx.createRadialGradient(x_px - 6, y_px - 6, 0, x_px, y_px, 80);
-    grad.addColorStop(0, "#FFFFFF");
-    grad.addColorStop(1, "#000000");
-  }
+  var grid;
+  if (id == 1)
+    grad = ctx.createRadialGradient(x_px - 6, y_px - 6, 0, x_px, y_px, 18);
+  else if (id == 2)
+    grad = ctx.createRadialGradient(x_px - 6, y_px - 6, 0, x_px, y_px, 80);
+  grad.addColorStop(0, "#FFFFFF");
+  grad.addColorStop(1, "#000000");
 
   ctx.fillStyle = grad;
   ctx.beginPath();
