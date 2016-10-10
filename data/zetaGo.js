@@ -19,13 +19,11 @@ function zetaGo() {
     for (var j = 0; j < N; j++) {
       if (gridP[i][j] > maxP){
         maxP = gridP[i][j];
-        xy[0] = i;
-        xy[1] = j;
+        xy[0] = j;
+        xy[1] = i;
       }
     }
   }
-
-  console.log(xy[0] + " " + xy[1]);
 
   return xy;
 

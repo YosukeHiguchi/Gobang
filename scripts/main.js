@@ -28,8 +28,8 @@ document.onclick = function (e) {
     /*---AI----*/
     xy_AI = zetaGo();
     /*---------*/
-    placeStone(xy_AI[1], xy_AI[0]);
-    isGameOver(xy_AI[1], xy_AI[0]);
+    placeStone(xy_AI[0], xy_AI[1]);
+    isGameOver(xy_AI[0], xy_AI[1]);
     (id == 1)? id = 2: id = 1;
 
   }
