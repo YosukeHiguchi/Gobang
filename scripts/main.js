@@ -19,16 +19,16 @@ document.onclick = function (e) {
   /*AI vs human (human always first for now)*/
   if (x_grid >= 0 && y_grid >= 0 && x_grid <= 18 && y_grid <= 18 && grid[y_grid][x_grid] == 0) {
     placeStone(x_grid, y_grid);
-    isGameOver();
+    isGameOver(x_grid, y_grid);
     (id == 1)? id = 2: id = 1;
 
 
     /*---AI----*/
-    zetaGo();
+    //zetaGo();
     /*---------*/
 
 
-    isGameOver();
+    //isGameOver();
     (id == 1)? id = 2: id = 1;
   }
 

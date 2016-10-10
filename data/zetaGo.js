@@ -6,6 +6,7 @@ function zetaGo() {
   main();
   function main() {
     setGridP();
+
     disp();
   }
 
@@ -19,6 +20,9 @@ function zetaGo() {
         else gridP[i][j] = 0;
       }
     }
+  }
+
+  function getPriority() {
   }
 
   function disp() {
