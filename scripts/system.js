@@ -29,7 +29,7 @@ function isGameOver(x, y) {
     }
   }
 
-  //down left slant
+  //down left diagonal
   cnt = isSide1Cont = isSide2Cont = 1;
   for (var i = 1; i <= 4; i++) {
     if (isEq(y, x, y + i, x + i) && isSide1Cont) cnt++;
@@ -43,7 +43,7 @@ function isGameOver(x, y) {
     }
   }
 
-  //up right slant
+  //up right diagonal
   cnt = isSide1Cont = isSide2Cont = 1;
   for (var i = 1; i <= 4; i++) {
     if (isEq(y, x, y + i, x - i) && isSide1Cont) cnt++;

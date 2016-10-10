@@ -26,12 +26,12 @@ document.onclick = function (e) {
     (id == 1)? id = 2: id = 1;
 
     /*---AI----*/
-    xy_AI = betaGo();
+    xy_AI = zetaGo();
     /*---------*/
-    placeStone(xy_AI[0], xy_AI[1]);
-    isGameOver(xy_AI[0], xy_AI[1]);
+    placeStone(xy_AI[1], xy_AI[0]);
+    isGameOver(xy_AI[1], xy_AI[0]);
     (id == 1)? id = 2: id = 1;
-    
+
   }
 
   /*human vs human*/
