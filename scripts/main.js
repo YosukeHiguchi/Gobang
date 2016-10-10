@@ -17,19 +17,21 @@ document.onclick = function (e) {
   var x_grid = Math.floor(cursorX / 33);
   var y_grid = Math.floor(cursorY / 33);
 
+  var xy_AI = Array(2);
+
   if (x_grid >= 0 && y_grid >= 0 && x_grid <= 18 && y_grid <= 18 && grid[y_grid][x_grid] == 0) {
+
     placeStone(x_grid, y_grid);
     isGameOver(x_grid, y_grid);
     (id == 1)? id = 2: id = 1;
 
-
     /*---AI----*/
-    //zetaGo();
+    xy_AI = betaGo();
     /*---------*/
-
-
-    //isGameOver();
+    placeStone(xy_AI[0], xy_AI[1]);
+    isGameOver(xy_AI[0], xy_AI[1]);
     (id == 1)? id = 2: id = 1;
+    
   }
 
   /*human vs human*/

@@ -1,7 +1,4 @@
-function placeStone(x, y)
-   put stone at (x, y)
-
-var grid[][] (19 * 19)
+grid[][] (19 * 19)
    current grid
 
 Following variable name is not available
