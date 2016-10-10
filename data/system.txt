@@ -4,6 +4,12 @@ function placeStone(x, y)
 var grid[][] (19 * 19)
    current grid
 
+Following variable name is not available
+   grid
+   id
+   cursorX
+   cursorY
+
 
 19 * 19
 

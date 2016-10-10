@@ -11,6 +11,7 @@ document.onmousemove = function (e) {
     placeStoneHover(cursorX, cursorY);
 }
 
+//main
 document.onclick = function (e) {
   var x_grid = Math.floor(cursorX / 33);
   var y_grid = Math.floor(cursorY / 33);
