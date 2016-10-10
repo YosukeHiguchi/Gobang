@@ -57,7 +57,6 @@ function isGameOver(x, y) {
     }
   }
 
-
   return false;
 
   /*-------------------------function----------------------------*/
