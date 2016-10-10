@@ -1,19 +1,73 @@
 function isGameOver(x, y) {
+  var cnt, isSide1Cont, isSide2Cont;
 
-  console.log(isEq(y, x, y-2, x));
+  //horizontal
+  cnt = isSide1Cont = isSide2Cont = 1;
+  for (var i = 1; i <= 4; i++) {
+    if (isEq(y, x, y + i, x) && isSide1Cont) cnt++;
+    else isSide1Cont = 0;
+    if (isEq(y, x, y - i, x) && isSide2Cont) cnt++;
+    else isSide2Cont = 0;
 
-  if ((isEq(y, x, y-1, x) && isEq(y, x, y-2, x) && isEq(y, x, y+1, x) && isEq(y, x, y+2, x)) ||
-      (isEq(y, x, y, x-1) && isEq(y, x, y, x-2) && isEq(y, x, y, x+1) && isEq(y, x, y, x+2)) ||
-      (isEq(y, x, y-1, x-1) && isEq(y, x, y-2, x-2) && isEq(y, x, y+1, x+1) && isEq(y, x, y+2, x+2)) ||
-      (isEq(y, x, y-1, x+1) && isEq(y, x, y-2, x+2) && isEq(y, x, y+1, x-1) && isEq(y, x, y+2, x-2))) {
-        (grid[y][x] == 1)? alert("black won"): alert("white won");
-        return true;
+    if (cnt == 5){
+      dispWinner(grid[y][x]);
+      return true;
+    }
   }
+
+  //vertical
+  cnt = isSide1Cont = isSide2Cont = 1;
+  for (var i = 1; i <= 4; i++) {
+    if (isEq(y, x, y , x + i) && isSide1Cont) cnt++;
+    else isSide1Cont = 0;
+    if (isEq(y, x, y , x - i) && isSide2Cont) cnt++;
+    else isSide2Cont = 0;
+
+    if (cnt == 5){
+      dispWinner(grid[y][x]);
+      return true;
+    }
+  }
+
+  //down left slant
+  cnt = isSide1Cont = isSide2Cont = 1;
+  for (var i = 1; i <= 4; i++) {
+    if (isEq(y, x, y + i, x + i) && isSide1Cont) cnt++;
+    else isSide1Cont = 0;
+    if (isEq(y, x, y - i, x - i) && isSide2Cont) cnt++;
+    else isSide2Cont = 0;
+
+    if (cnt == 5){
+      dispWinner(grid[y][x]);
+      return true;
+    }
+  }
+
+  //up right slant
+  cnt = isSide1Cont = isSide2Cont = 1;
+  for (var i = 1; i <= 4; i++) {
+    if (isEq(y, x, y + i, x - i) && isSide1Cont) cnt++;
+    else isSide1Cont = 0;
+    if (isEq(y, x, y - i, x + i) && isSide2Cont) cnt++;
+    else isSide2Cont = 0;
+
+    if (cnt == 5){
+      dispWinner(grid[y][x]);
+      return true;
+    }
+  }
+
+
   return false;
 
-  function isEq(y, x, a, b) {
+  /*-------------------------function----------------------------*/
+  function dispWinner(winner) {
+    (winner == 1)? alert("black won"): alert("white won");
+  }
+
+  function isEq(y, x, b, a) {
     if (a < 0 || b < 0 || a > 18 || b > 18) return false;
-    return (grid[y][x] == grid[a][b]) && grid[y][x] != 0;
+    return (grid[y][x] == grid[b][a]) && grid[y][x] != 0;
   }
 
 }
