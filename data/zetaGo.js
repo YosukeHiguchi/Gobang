@@ -2,8 +2,21 @@ function zetaGo() {
   var N = 19;
 
   var gridP;
+  var xy = Array(2);
 
   setGridP();
+
+  var countEmpty = 0;
+  for (var i = 0; i < N; i++){
+    for (var j = 0; j < N; j++) {
+      if (grid[i][j] == 0)
+        countEmpty++;
+    }
+  }
+  if (countEmpty == N * N) {
+    xy = [Math.floor(N / 2), Math.floor(N / 2)];
+    return xy;
+  }
 
   for (var i = 0; i < N; i++){
     for (var j = 0; j < N; j++) {
@@ -17,10 +30,9 @@ function zetaGo() {
         gridP[i][j] += getPriority(i, j, 2);
     }
   }
-//  disp();
+  disp();
 
   var maxP = 0;
-  var xy = Array(2);
   for (var i = 0; i < N; i++){
     for (var j = 0; j < N; j++) {
       if (gridP[i][j] > maxP){
@@ -84,6 +96,8 @@ function zetaGo() {
     }
     if (cnt > max) max = cnt;
 
+    if (max >= 5) max = 100;
+
     return max;
 
   }
@@ -98,7 +112,6 @@ function zetaGo() {
         else gridP[i][j] = 0;
       }
     }
-    disp();
   }
 
   function disp() {
