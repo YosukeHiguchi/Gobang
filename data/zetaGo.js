@@ -17,7 +17,7 @@ function zetaGo() {
         gridP[i][j] += getPriority(i, j, 2);
     }
   }
-  disp();
+//  disp();
 
   var maxP = 0;
   var xy = Array(2);
@@ -98,6 +98,7 @@ function zetaGo() {
         else gridP[i][j] = 0;
       }
     }
+    disp();
   }
 
   function disp() {
