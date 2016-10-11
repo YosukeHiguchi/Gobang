@@ -1,5 +1,7 @@
 function zetaGo() {
   var N = 19;
+  var PRIORITY_FOUR = 50;
+  var PRIORITY_FIVE = 100;
 
   var gridP;
   var xy = Array(2);
@@ -50,53 +52,61 @@ function zetaGo() {
   //returns priority value at (i, j)
   function getPriority(i, j, id) {
     var max = 0;
-    var cnt, isSide1Cont, isSide2Cont;
+    var cnt, cntSide1, cntSide2, isSide1Cont, isSide2Cont;
 
     //vertical
-    cnt = 1;
+    cntSide1 = cntSide2 = 0;
     isSide1Cont = isSide2Cont = 1;
     for (var v = 1; v <= 4; v++) {
-      if (i - v >= 0 && grid[i - v][j] == id && isSide1Cont) cnt++;
+      if (i - v >= 0 && grid[i - v][j] == id && isSide1Cont) cntSide1++;
       else isSide1Cont = 0;
-      if (i + v < N && grid[i + v][j] == id && isSide2Cont) cnt++;
+      if (i + v < N && grid[i + v][j] == id && isSide2Cont) cntSide2++;
       else isSide2Cont = 0;
     }
+    cnt = cntSide1 + cntSide2 + 1;
+    if (cntSide1 == 3 || cntSide2 == 3) cnt = PRIORITY_FOUR;
     if (cnt > max) max = cnt;
 
     //horizontal
-    cnt = 1;
+    cntSide1 = cntSide2 = 0;
     isSide1Cont = isSide2Cont = 1;
     for (var v = 1; v <= 4; v++) {
-      if (j - v >= 0 && grid[i][j - v] == id && isSide1Cont) cnt++;
+      if (j - v >= 0 && grid[i][j - v] == id && isSide1Cont) cntSide1++;
       else isSide1Cont = 0;
-      if (j + v < N && grid[i][j + v] == id && isSide2Cont) cnt++;
+      if (j + v < N && grid[i][j + v] == id && isSide2Cont) cntSide2++;
       else isSide2Cont = 0;
     }
+    cnt = cntSide1 + cntSide2 + 1;
+    if (cntSide1 == 3 || cntSide2 == 3) cnt = PRIORITY_FOUR;
     if (cnt > max) max = cnt;
 
     //down left diagonal
-    cnt = 1;
+    cntSide1 = cntSide2 = 0;
     isSide1Cont = isSide2Cont = 1;
     for (var v = 1; v <= 4; v++) {
-      if (i - v >= 0 && j - v >=0 && grid[i - v][j - v] == id && isSide1Cont) cnt++;
+      if (i - v >= 0 && j - v >=0 && grid[i - v][j - v] == id && isSide1Cont) cntSide1++;
       else isSide1Cont = 0;
-      if (i + v < N && j + v < N && grid[i + v][j + v] == id && isSide2Cont) cnt++;
+      if (i + v < N && j + v < N && grid[i + v][j + v] == id && isSide2Cont) cntSide2++;
       else isSide2Cont = 0;
     }
+    cnt = cntSide1 + cntSide2 + 1;
+    if (cntSide1 == 3 || cntSide2 == 3) cnt = PRIORITY_FOUR;
     if (cnt > max) max = cnt;
 
     //up right diagonal
-    cnt = 1;
+    cntSide1 = cntSide2 = 0;
     isSide1Cont = isSide2Cont = 1;
     for (var v = 1; v <= 4; v++) {
-      if (i - v >= 0 && j + v < N && grid[i - v][j + v] == id && isSide1Cont) cnt++;
+      if (i - v >= 0 && j + v < N && grid[i - v][j + v] == id && isSide1Cont) cntSide1++;
       else isSide1Cont = 0;
-      if (i + v < N && j - v >= 0 && grid[i + v][j - v] == id && isSide2Cont) cnt++;
+      if (i + v < N && j - v >= 0 && grid[i + v][j - v] == id && isSide2Cont) cntSide2++;
       else isSide2Cont = 0;
     }
+    cnt = cntSide1 + cntSide2 + 1;
+    if (cntSide1 == 3 || cntSide2 == 3) cnt = PRIORITY_FOUR;
     if (cnt > max) max = cnt;
 
-    if (max >= 5) max = 100;
+    if (max >= 5 && max != 50) max = PRIORITY_FIVE;
 
     return max;
 
