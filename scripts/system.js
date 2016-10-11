@@ -61,7 +61,8 @@ function isGameOver(x, y) {
 
   /*-------------------------function----------------------------*/
   function dispWinner(winner) {
-    (winner == 1)? alert("black won"): alert("white won");
+    var result = document.getElementById("result");
+    (winner == 1)? result.innerHTML = "black won": result.innerHTML = "white won";
   }
 
   function isEq(y, x, b, a) {

@@ -8,7 +8,13 @@ function zetaGo() {
   for (var i = 0; i < N; i++){
     for (var j = 0; j < N; j++) {
       if (grid[i][j] == 0)
-        getPriority(i, j);
+        gridP[i][j] += getPriority(i, j, 1);
+    }
+  }
+  for (var i = 0; i < N; i++){
+    for (var j = 0; j < N; j++) {
+      if (grid[i][j] == 0)
+        gridP[i][j] += getPriority(i, j, 2);
     }
   }
   disp();
@@ -30,7 +36,7 @@ function zetaGo() {
 
 /*---------------------------function---------------------------*/
   //returns priority value at (i, j)
-  function getPriority(i, j) {
+  function getPriority(i, j, id) {
     var max = 0;
     var cnt, isSide1Cont, isSide2Cont;
 
@@ -38,9 +44,9 @@ function zetaGo() {
     cnt = 1;
     isSide1Cont = isSide2Cont = 1;
     for (var v = 1; v <= 4; v++) {
-      if (i - v >= 0 && grid[i - v][j] == 1 && isSide1Cont) cnt++;
+      if (i - v >= 0 && grid[i - v][j] == id && isSide1Cont) cnt++;
       else isSide1Cont = 0;
-      if (i + v < N && grid[i + v][j] == 1 && isSide2Cont) cnt++;
+      if (i + v < N && grid[i + v][j] == id && isSide2Cont) cnt++;
       else isSide2Cont = 0;
     }
     if (cnt > max) max = cnt;
@@ -49,9 +55,9 @@ function zetaGo() {
     cnt = 1;
     isSide1Cont = isSide2Cont = 1;
     for (var v = 1; v <= 4; v++) {
-      if (j - v >= 0 && grid[i][j - v] == 1 && isSide1Cont) cnt++;
+      if (j - v >= 0 && grid[i][j - v] == id && isSide1Cont) cnt++;
       else isSide1Cont = 0;
-      if (j + v < N && grid[i][j + v] == 1 && isSide2Cont) cnt++;
+      if (j + v < N && grid[i][j + v] == id && isSide2Cont) cnt++;
       else isSide2Cont = 0;
     }
     if (cnt > max) max = cnt;
@@ -60,9 +66,9 @@ function zetaGo() {
     cnt = 1;
     isSide1Cont = isSide2Cont = 1;
     for (var v = 1; v <= 4; v++) {
-      if (i - v >= 0 && j - v >=0 && grid[i - v][j - v] == 1 && isSide1Cont) cnt++;
+      if (i - v >= 0 && j - v >=0 && grid[i - v][j - v] == id && isSide1Cont) cnt++;
       else isSide1Cont = 0;
-      if (i + v < N && j + v < N && grid[i + v][j + v] == 1 && isSide2Cont) cnt++;
+      if (i + v < N && j + v < N && grid[i + v][j + v] == id && isSide2Cont) cnt++;
       else isSide2Cont = 0;
     }
     if (cnt > max) max = cnt;
@@ -71,14 +77,14 @@ function zetaGo() {
     cnt = 1;
     isSide1Cont = isSide2Cont = 1;
     for (var v = 1; v <= 4; v++) {
-      if (i - v >= 0 && j + v < N && grid[i - v][j + v] == 1 && isSide1Cont) cnt++;
+      if (i - v >= 0 && j + v < N && grid[i - v][j + v] == id && isSide1Cont) cnt++;
       else isSide1Cont = 0;
-      if (i + v < N && j - v >= 0 && grid[i + v][j - v] == 1 && isSide2Cont) cnt++;
+      if (i + v < N && j - v >= 0 && grid[i + v][j - v] == id && isSide2Cont) cnt++;
       else isSide2Cont = 0;
     }
     if (cnt > max) max = cnt;
 
-    gridP[i][j] = max;
+    return max;
 
   }
 

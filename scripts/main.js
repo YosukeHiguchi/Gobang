@@ -44,10 +44,14 @@ document.onclick = function (e) {
   // }
 
   /*AI vs AI 調整中*/
-  // betaGo();
-  // isGameOver();
+  // var xy_AI = Array(2);
+  // xy_AI = zetaGo();
+  // placeStone(xy_AI[0], xy_AI[1]);
+  // isGameOver(xy_AI[0], xy_AI[1]);
   // (id == 1)? id = 2: id = 1;
-  // zetaGo();
-  // isGameOver();
+  //
+  // xy_AI = zetaGo();
+  // placeStone(xy_AI[0], xy_AI[1]);
+  // isGameOver(xy_AI[0], xy_AI[1]);
   // (id == 1)? id = 2: id = 1;
 }
