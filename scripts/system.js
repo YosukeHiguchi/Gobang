@@ -97,6 +97,8 @@ function isGameOver(x, y) {
 
   /*-------------------------function----------------------------*/
   function dispWinner(winner) {
+    isGameAvailable = false;
+
     var result = document.getElementById("result");
     (winner == 1)? result.innerHTML = "black won": result.innerHTML = "white won";
   }
