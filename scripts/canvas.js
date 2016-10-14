@@ -23,17 +23,19 @@ function placeStone(x_grid, y_grid) {
 
 //only for physical input
 function placeStoneHover(x_px, y_px) {
+  if (!isGameAvailable) return;
+  
   var x_grid = Math.floor(x_px / 33);
   var y_grid = Math.floor(y_px / 33);
 
   if (grid[y_grid][x_grid] == 0) {
     updateGrid();
-    drawStone(x_grid, y_grid, id);
+    drawStone(x_grid, y_grid, id, 1, 0);
   }
 }
 
 //draw stone on current canvas
-function drawStone(x_grid, y_grid, id) {
+function drawStone(x_grid, y_grid, id, isHover, isGameFinished) {
   if (id == 0) return;
 
   //coordinate in pixel
@@ -48,6 +50,21 @@ function drawStone(x_grid, y_grid, id) {
     grad = ctx.createRadialGradient(x_px - 6, y_px - 6, 0, x_px, y_px, 80);
   grad.addColorStop(0, "#FFFFFF");
   grad.addColorStop(1, "#000000");
+
+  //showing winner stones
+  if (isGameFinished) {
+    grad.addColorStop(0, "#FF6347");
+  }
+
+  //transparent
+  if (isHover) {
+    if (id == 1) {
+      grad.addColorStop(0, "rgba(255, 255, 255, 0.4)");
+    }
+    if (id == 2) {
+      grad.addColorStop(0, "rgba(255, 255, 255, 0.7)");
+    }
+  }
 
   ctx.fillStyle = grad;
   ctx.beginPath();

@@ -32,7 +32,7 @@ function zetaGo() {
         gridP[i][j] += getPriority(i, j, 2);
     }
   }
-  disp();
+  //disp();
 
   var maxP = 0;
   for (var i = 0; i < N; i++){
@@ -48,7 +48,7 @@ function zetaGo() {
   return xy;
 
 
-/*---------------------------function---------------------------*/
+/*---------------------------function----------------------------*/
   //returns priority value at (i, j)
   function getPriority(i, j, id) {
     var max = 0;

@@ -32,7 +32,7 @@ function updateGrid() {
   ctx.clearRect(0, 0, W, H);
   for (var y_grid = 0; y_grid < 19; y_grid++) {
     for (var x_grid = 0; x_grid < 19; x_grid++) {
-      drawStone(x_grid, y_grid, grid[y_grid][x_grid]);
+      drawStone(x_grid, y_grid, grid[y_grid][x_grid], 0, 0);
     }
   }
 }

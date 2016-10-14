@@ -1,7 +1,7 @@
 function isGameOver(x, y) {
   var cnt, isSide1Cont, isSide2Cont;
 
-  //horizontal
+  //vertical
   cnt = isSide1Cont = isSide2Cont = 1;
   for (var i = 1; i <= 4; i++) {
     if (isEq(y, x, y + i, x) && isSide1Cont) cnt++;
@@ -10,12 +10,21 @@ function isGameOver(x, y) {
     else isSide2Cont = 0;
 
     if (cnt == 5){
+      isSide1Cont = isSide2Cont = 1;
+      drawStone(x, y, grid[y][x], 0, 1);
+      for (var j = 1; j <= 4; j++) {
+        if (isEq(y, x, y + j, x) && isSide1Cont) drawStone(x, y + j, grid[y][x], 0, 1);
+        else isSide1Cont = 0;
+        if (isEq(y, x, y - j, x) && isSide2Cont) drawStone(x, y - j, grid[y][x], 0, 1);
+        else isSide2Cont = 0;
+      }
+
       dispWinner(grid[y][x]);
       return true;
     }
   }
 
-  //vertical
+  //horizontal
   cnt = isSide1Cont = isSide2Cont = 1;
   for (var i = 1; i <= 4; i++) {
     if (isEq(y, x, y , x + i) && isSide1Cont) cnt++;
@@ -24,6 +33,15 @@ function isGameOver(x, y) {
     else isSide2Cont = 0;
 
     if (cnt == 5){
+      isSide1Cont = isSide2Cont = 1;
+      drawStone(x, y, grid[y][x], 0, 1);
+      for (var j = 1; j <= 4; j++) {
+        if (isEq(y, x, y, x + j) && isSide1Cont) drawStone(x + j, y, grid[y][x], 0, 1);
+        else isSide1Cont = 0;
+        if (isEq(y, x, y, x - j) && isSide2Cont) drawStone(x - j, y, grid[y][x], 0, 1);
+        else isSide2Cont = 0;
+      }
+
       dispWinner(grid[y][x]);
       return true;
     }
@@ -38,6 +56,15 @@ function isGameOver(x, y) {
     else isSide2Cont = 0;
 
     if (cnt == 5){
+      isSide1Cont = isSide2Cont = 1;
+      drawStone(x, y, grid[y][x], 0, 1);
+      for (var j = 1; j <= 4; j++) {
+        if (isEq(y, x, y + j, x + j) && isSide1Cont) drawStone(x + j, y + j, grid[y][x], 0, 1);
+        else isSide1Cont = 0;
+        if (isEq(y, x, y - j, x - j) && isSide2Cont) drawStone(x - j, y - j, grid[y][x], 0, 1);
+        else isSide2Cont = 0;
+      }
+
       dispWinner(grid[y][x]);
       return true;
     }
@@ -52,6 +79,15 @@ function isGameOver(x, y) {
     else isSide2Cont = 0;
 
     if (cnt == 5){
+      isSide1Cont = isSide2Cont = 1;
+      drawStone(x, y, grid[y][x], 0, 1);
+      for (var j = 1; j <= 4; j++) {
+        if (isEq(y, x, y + j, x - j) && isSide1Cont) drawStone(x - j, y + j, grid[y][x], 0, 1);
+        else isSide1Cont = 0;
+        if (isEq(y, x, y - j, x + j) && isSide2Cont) drawStone(x + j, y - j, grid[y][x], 0, 1);
+        else isSide2Cont = 0;
+      }
+
       dispWinner(grid[y][x]);
       return true;
     }
