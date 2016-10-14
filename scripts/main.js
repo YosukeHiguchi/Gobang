@@ -45,7 +45,6 @@ function gameMain() {
   // if (x_grid >= 0 && y_grid >= 0 && x_grid <= 18 && y_grid <= 18 && grid[y_grid][x_grid] == 0) {
   //   placeStone(x_grid, y_grid);
   //   if (isGameOver(x_grid, y_grid)) return;
-  //   }
   //   (id == 1)? id = 2: id = 1;
   // }
 

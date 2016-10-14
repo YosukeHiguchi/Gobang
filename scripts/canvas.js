@@ -24,7 +24,7 @@ function placeStone(x_grid, y_grid) {
 //only for physical input
 function placeStoneHover(x_px, y_px) {
   if (!isGameAvailable) return;
-  
+
   var x_grid = Math.floor(x_px / 33);
   var y_grid = Math.floor(y_px / 33);
 
