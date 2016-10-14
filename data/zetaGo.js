@@ -39,6 +39,7 @@ function zetaGo() {
   //returns priority Dir at (i, j) on grid(target)
   function getPriority(target, i, j, id) {
     var max = 0;
+    //sideCont: if same stones are continued in one line, 1
     var cnt, side1Cont, side2Cont;
 
     //horizontal, vertical, down left, up right
@@ -73,14 +74,19 @@ function zetaGo() {
   function isCheckmate(target, i, j, id) {
     if (target[i][j] != 0) return false;
 
-    var cmCnt = 0;
+    var cmCnt = 0; //the number of checkmates
+    var cmX = [], cmY = []; //the place of checkmates
+
+    //pattern of checkmates
     var cm1 = [0, 0, id, id, id, 0];
-    var cmX = [], cmY = [];
+    var cm2 = [0, id, 0, id, id, 0];
 
     //horizontal, vertical, down left, up right
     var xDir = [1, 0, 1, 1];
     var yDir = [0, 1, 1, -1];
 
+    //sidegrid: one of the value in one direction
+    //sideCnt: the number of similarity
     var side1grid, side2grid, side1Cnt, side2Cnt;
     for (var d = 0; d < 4; d++){
       //cm1
@@ -98,6 +104,20 @@ function zetaGo() {
       if (side1Cnt == 5) { cmX.push(j - xDir[d]); cmY.push(i - yDir[d]); console.log((i - yDir[d])+ " " + (j - xDir[d])); }
       if (side2Cnt == 5) { cmX.push(j + xDir[d]); cmY.push(i + yDir[d]); console.log((i + yDir[d])+ " " + (j + xDir[d])); }
 
+      //cm2
+      side1grid = side2grid = -1;
+      side1Cnt = side2Cnt = 0;
+      for (var v = 1; v <= 5; v++) {
+        if (i - yDir[d] * v >= 0 && i - yDir[d] * v < N && j - xDir[d] * v >= 0)
+          side1grid = target[i - yDir[d] * v][j - xDir[d] * v];
+        if (i + yDir[d] * v < N && i + yDir[d] * v >= 0 && j + xDir[d] * v < N)
+          side2grid = target[i + yDir[d] * v][j + xDir[d] * v];
+
+        if (side1grid == cm2[v]) side1Cnt++;
+        if (side2grid == cm2[v]) side2Cnt++;
+      }
+      if (side1Cnt == 5) { cmX.push(j - xDir[d] * 2); cmY.push(i - yDir[d] * 2); console.log((i - yDir[d] * 2)+ " " + (j - xDir[d] * 2)); }
+      if (side2Cnt == 5) { cmX.push(j + xDir[d] * 2); cmY.push(i + yDir[d] * 2); console.log((i + yDir[d] * 2)+ " " + (j + xDir[d] * 2)); }
     }
 
     return false;
