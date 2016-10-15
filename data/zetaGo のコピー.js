@@ -72,9 +72,10 @@ function zetaGo() {
   //available when target(i, j) is empty
   //[0, 1, 1, 1, 0, 0] [0, 0, 1, 1, 1, 0]
   function isCheck(target, i, j, id) {
-    if (target[i][j] != 0) return -1;
+    if (target[i][j] != 0) return 0;
 
     var cmCnt = 0; //the number of precheckmates
+    var cmX = [], cmY = []; //the place of precheckmates
 
     //pattern of checkmates
     var cm1 = [0, 0, id, id, id, 0];
@@ -91,50 +92,52 @@ function zetaGo() {
       //cm1
       side1grid = side2grid = -1;
       side1Cnt = side2Cnt = 0;
-      for (var v = - 1; v <= 4; v++) {
+      for (var v = 1; v <= 5; v++) {
         if (i - yDir[d] * v >= 0 && i - yDir[d] * v < N && j - xDir[d] * v >= 0)
           side1grid = target[i - yDir[d] * v][j - xDir[d] * v];
         if (i + yDir[d] * v < N && i + yDir[d] * v >= 0 && j + xDir[d] * v < N)
           side2grid = target[i + yDir[d] * v][j + xDir[d] * v];
 
-        if (side1grid == cm1[v + 1]) side1Cnt++;
-        if (side2grid == cm1[v + 1]) side2Cnt++;
+        if (side1grid == cm1[v]) side1Cnt++;
+        if (side2grid == cm1[v]) side2Cnt++;
       }
-      if (side1Cnt == 6) { cmCnt++; console.log("check at: " + i + " " + j); }
-      if (side2Cnt == 6) { cmCnt++; console.log("check at: " + i + " " + j); }
+      if (side1Cnt == 5) { cmX[cmCnt].push(j - xDir[d]); cmY[cmCnt++].push(i - yDir[d]); }
+      if (side2Cnt == 5) { cmX[cmCnt].push(j + xDir[d]); cmY[cmCnt++].push(i + yDir[d]); }
 
       //cm2
       side1grid = side2grid = -1;
       side1Cnt = side2Cnt = 0;
-      for (var v = -2; v <= 3; v++) {
+      for (var v = 1; v <= 5; v++) {
         if (i - yDir[d] * v >= 0 && i - yDir[d] * v < N && j - xDir[d] * v >= 0)
           side1grid = target[i - yDir[d] * v][j - xDir[d] * v];
         if (i + yDir[d] * v < N && i + yDir[d] * v >= 0 && j + xDir[d] * v < N)
           side2grid = target[i + yDir[d] * v][j + xDir[d] * v];
 
-        if (side1grid == cm2[v + 2]) side1Cnt++;
-        if (side2grid == cm2[v + 2]) side2Cnt++;
+        if (side1grid == cm2[v]) side1Cnt++;
+        if (side2grid == cm2[v]) side2Cnt++;
       }
-      if (side1Cnt == 6) { cmCnt++; console.log("check at: " + i + " " + j); }
-      if (side2Cnt == 6) { cmCnt++; console.log("check at: " + i + " " + j); }
+      if (side1Cnt == 5) { cmX[cmCnt].push(j - xDir[d] * 2); cmY[cmCnt++].push(i - yDir[d] * 2); }
+      if (side2Cnt == 5) { cmX[cmCnt].push(j + xDir[d] * 2); cmY[cmCnt++].push(i + yDir[d] * 2); }
 
       //add here for more
     }
 
-    return cmCnt;
+    for (var v = 0; v < cmX.length; v++) {
+      console.log(cmX[v] + " , " + cmY[v]);
+    }
+
+    return false;
 
   }
 
-  //returns the number of 詰み that can be obtained when stone(id) is place at (i, j)
-  //available when target(i, j) is empty
-  //[0, 1, 1, 1, 1, 0]
   function isCheckmate(target, i, j, id) {
-    if (target[i][j] != 0) return -1;
+    if (target[i][j] != 0) return false;
 
     var cmCnt = 0; //the number of checkmates
+    var cmX = [], cmY = []; //the place of checkmates
 
     //pattern of checkmates
-    var cm1 = [0, id, id, id, id, 0];
+    var cm = [0, id, id, id, id, 0];
 
     //horizontal, vertical, down left, up right
     var xDir = [1, 0, 1, 1];
@@ -153,18 +156,16 @@ function zetaGo() {
         if (i + yDir[d] * v < N && i + yDir[d] * v >= 0 && j + xDir[d] * v < N)
           side2grid = target[i + yDir[d] * v][j + xDir[d] * v];
 
-        if (side1grid == cm1[v]) side1Cnt++;
-        if (side2grid == cm1[v]) side2Cnt++;
+        if (side1grid == cm[v]) side1Cnt++;
+        if (side2grid == cm[v]) side2Cnt++;
       }
-      if (side1Cnt == 5) { console.log(i + " " + j); }
-      if (side2Cnt == 5) { console.log(i + " " + j); }
+      if (side1Cnt == 5) { cmX.push(j); cmY.push(i); console.log(i + " " + j); }
+      if (side2Cnt == 5) { cmX.push(j); cmY.push(i); console.log(i + " " + j); }
 
       //add here for more
     }
 
-    if (cmCnt != 0) console.log("cmCnt: " + cmCnt);
-
-    return cmCnt;
+    return false;
 
   }
 
