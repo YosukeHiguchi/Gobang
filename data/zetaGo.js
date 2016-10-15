@@ -68,14 +68,14 @@ function zetaGo() {
     return max;
   }
 
-  //returns true when the grid(target) is 詰んだ when id at (i, j)
+  //returns true when the grid(target) is 王手 when id at (i, j)
   //available when target(i, j) is empty
   //[0, 1, 1, 1, 0, 0] [0, 0, 1, 1, 1, 0]
-  function isCheckmate(target, i, j, id) {
+  function isCheck(target, i, j, id) {
     if (target[i][j] != 0) return false;
 
-    var cmCnt = 0; //the number of checkmates
-    var cmX = [], cmY = []; //the place of checkmates
+    var cmCnt = 0; //the number of precheckmates
+    var cmX = [], cmY = []; //the place of precheckmates
 
     //pattern of checkmates
     var cm1 = [0, 0, id, id, id, 0];
@@ -118,6 +118,47 @@ function zetaGo() {
       }
       if (side1Cnt == 5) { cmX.push(j - xDir[d] * 2); cmY.push(i - yDir[d] * 2); console.log((i - yDir[d] * 2)+ " " + (j - xDir[d] * 2)); }
       if (side2Cnt == 5) { cmX.push(j + xDir[d] * 2); cmY.push(i + yDir[d] * 2); console.log((i + yDir[d] * 2)+ " " + (j + xDir[d] * 2)); }
+
+      //add here for more
+    }
+
+    return false;
+
+  }
+
+  function isCheckmate(target, i, j, id) {
+    if (target[i][j] != 0) return false;
+
+    var cmCnt = 0; //the number of checkmates
+    var cmX = [], cmY = []; //the place of checkmates
+
+    //pattern of checkmates
+    var cm = [0, id, id, id, id, 0];
+
+    //horizontal, vertical, down left, up right
+    var xDir = [1, 0, 1, 1];
+    var yDir = [0, 1, 1, -1];
+
+    //sidegrid: one of the value in one direction
+    //sideCnt: the number of similarity
+    var side1grid, side2grid, side1Cnt, side2Cnt;
+    for (var d = 0; d < 4; d++){
+      //cm
+      side1grid = side2grid = -1;
+      side1Cnt = side2Cnt = 0;
+      for (var v = 1; v <= 5; v++) {
+        if (i - yDir[d] * v >= 0 && i - yDir[d] * v < N && j - xDir[d] * v >= 0)
+          side1grid = target[i - yDir[d] * v][j - xDir[d] * v];
+        if (i + yDir[d] * v < N && i + yDir[d] * v >= 0 && j + xDir[d] * v < N)
+          side2grid = target[i + yDir[d] * v][j + xDir[d] * v];
+
+        if (side1grid == cm[v]) side1Cnt++;
+        if (side2grid == cm[v]) side2Cnt++;
+      }
+      if (side1Cnt == 5) { cmX.push(j); cmY.push(i); console.log(i + " " + j); }
+      if (side2Cnt == 5) { cmX.push(j); cmY.push(i); console.log(i + " " + j); }
+
+      //add here for more
     }
 
     return false;
