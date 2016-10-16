@@ -1,6 +1,5 @@
 var ctx;
 
-var N = 15;
 var W = 627, H = 627;
 
 //for N = 15
