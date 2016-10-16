@@ -1,4 +1,4 @@
-var id = 1; //1: black 2:white
+var id = 2; //1: black 2:white
 var cursorX = -1, cursorY = -1;
 var isGameAvailable = true;
 
@@ -57,7 +57,7 @@ function gameMain() {
   // (id == 1)? id = 2: id = 1;
   //
   //
-  // xy_AI = zetaGo();
+  // xy_AI = zetaGo(id);
   //
   // placeStone(xy_AI[0], xy_AI[1]);
   // if (isGameOver(xy_AI[0], xy_AI[1])){

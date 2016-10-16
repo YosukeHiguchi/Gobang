@@ -1,4 +1,4 @@
-function zetaGo() {
+function zetaGoA() {
   var N = 19;
 
   var gridP;
@@ -98,7 +98,6 @@ function zetaGo() {
         else gridP[i][j] = 0;
       }
     }
-    disp();
   }
 
   function disp() {

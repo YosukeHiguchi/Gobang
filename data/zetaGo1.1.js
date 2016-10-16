@@ -1,4 +1,4 @@
-function zetaGoA() {
+function zetaGoB() {
   var N = 19;
   var PRIORITY_FOUR = 50;
   var PRIORITY_FIVE = 100;
@@ -26,7 +26,7 @@ function zetaGoA() {
         gridP[i][j] += getPriority(i, j, 1);
     }
   }
-  disp();
+  //disp();
   for (var i = 0; i < N; i++){
     for (var j = 0; j < N; j++) {
       if (grid[i][j] == 0)

@@ -427,10 +427,11 @@ function zetaGo(myID) {
     //   console.log(i + "\t" + thisGrid[i]);
     // }
     for (var i = 0; i < N; i++) {
-        console.log(thisGrid[i][0] + "\t" + thisGrid[i][1] + "\t" + thisGrid[i][2] + "\t" + thisGrid[i][3] + "\t" + thisGrid[i][4] + "\t" +
-                    thisGrid[i][5] + "\t" + thisGrid[i][6] + "\t" + thisGrid[i][7] + "\t" + thisGrid[i][8] + "\t" + thisGrid[i][9] + "\t" +
-                    thisGrid[i][10] + "\t" + thisGrid[i][11] + "\t" + thisGrid[i][12] + "\t" + thisGrid[i][13] + "\t" + thisGrid[i][14] + "\t" +
-                    thisGrid[i][15] + "\t" + thisGrid[i][16] + "\t" + thisGrid[i][17] + "\t" + thisGrid[i][18] );
+      var str = "";
+      for (var j = 0; j < N; j++) {
+        str += thisGrid[i][j] + "\t";
+      }
+        console.log(str);
     }
     console.log("\n\n");
   }

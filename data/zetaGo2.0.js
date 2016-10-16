@@ -1,4 +1,4 @@
-function zetaGo() {
+function zetaGoC() {
   var N = 19;
   var GOOD_CHOICE = 100;
   var BAD_CHOICE = -10;
