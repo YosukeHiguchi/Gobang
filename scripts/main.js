@@ -30,7 +30,7 @@ function gameMain() {
     (id == 1)? id = 2: id = 1;
 
     /*---AI----*/
-    xy_AI = zetaGo();
+    xy_AI = zetaGo(id);
     /*---------*/
     placeStone(xy_AI[0], xy_AI[1]);
     if (isGameOver(xy_AI[0], xy_AI[1])) return;
