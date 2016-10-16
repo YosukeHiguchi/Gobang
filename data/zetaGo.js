@@ -1,17 +1,20 @@
 function zetaGo() {
   var N = 19;
 
+  //grid priority
   var GP1, GP2;
   var xy = Array(2);
 
   setGP();
 
-  for (var i = 0; i < N; i++){
+  for (var i = 0; i < N; i++) {
     for (var j = 0; j < N; j++) {
-      if (grid[i][j] == 0)
-        GP1[i][j] += getPriority(grid, i, j, 1);
+      if (GP1[i][j] >= 2) {
+        checkFuture(grid, i, j, 1);
+      }
     }
   }
+
 
   for (var i = 0; i < N; i++){
     for (var j = 0; j < N; j++) {
@@ -19,15 +22,19 @@ function zetaGo() {
         isCheck(grid, i, j, 1);
     }
   }
-  disp();
+  disp(GP1);
+
+
+
+
 
   var maxP = 0;
   for (var i = 0; i < N; i++){
     for (var j = 0; j < N; j++) {
       if (GP1[i][j] > maxP){
         maxP = GP1[i][j];
-        xy[0] = j;
-        xy[1] = i;
+        xy[0] = 0;
+        xy[1] = 0;
       }
     }
   }
@@ -36,6 +43,21 @@ function zetaGo() {
 
 
 /*---------------------------function----------------------------*/
+  function checkFuture(target, i, j, id) {
+    var thisGrid = new Array(N);
+    for (var u = 0; u < N; u++) {
+      thisGrid[u] = new Array(N);
+      for (var v = 0; v < N; v++){
+        thisGrid[u][v] = target[u][v];
+      }
+    }
+    thisGrid[i][j] = id;
+
+    var thisGP1, thisGP2;
+
+    //disp(thisGrid);
+  }
+
   //returns priority Dir at (i, j) on grid(target)
   function getPriority(target, i, j, id) {
     var max = 0;
@@ -187,11 +209,20 @@ function zetaGo() {
         else GP2[i][j] = 0;
       }
     }
+
+    for (var i = 0; i < N; i++){
+      for (var j = 0; j < N; j++) {
+        if (grid[i][j] == 0) {
+          GP1[i][j] = getPriority(grid, i, j, 1);
+          GP2[i][j] = getPriority(grid, i, j, 2);
+        }
+      }
+    }
   }
 
-  function disp() {
+  function disp(thisGrid) {
     for (var i = 0; i < N; i++) {
-      console.log(i + "  " + GP1[i]);
+      console.log(i + "\t" + thisGrid[i]);
     }
     console.log("\n\n");
   }
