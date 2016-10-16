@@ -1,5 +1,7 @@
 function zetaGo() {
   var N = 19;
+  var GOOD_CHOICE = 100;
+  var BAD_CHOICE = -10;
 
   //grid priority
   var GP1, GP2;
@@ -7,35 +9,34 @@ function zetaGo() {
 
   setGP();
 
+  var num;
   //human: 1 AI: 2
   for (var i = 0; i < N; i++) {
     for (var j = 0; j < N; j++) {
       if (GP1[i][j] >= 2) { //if the grid-priority of opponent at (i, j) is more than 2
-        checkFuture(grid, i, j, 2, 2); //try placing stone at (i, j)
+        /*---no damage when 0 for now----*/
+        num = checkFuture(grid, i, j, 2, 1); //try placing stone at (i, j)
+        GP1[i][j] += (100 - num * 5);
       }
     }
   }
+  disp(GP1);
 
-
-  for (var i = 0; i < N; i++){
+  for (var i = 0; i < N; i++) {
     for (var j = 0; j < N; j++) {
-      if (grid[i][j] == 0)
-        isCheck(grid, i, j, 1);
+      isCheck(grid, i, j, 1);
     }
   }
+
   //disp(GP1);
-
-
-
-
 
   var maxP = 0;
   for (var i = 0; i < N; i++){
     for (var j = 0; j < N; j++) {
       if (GP1[i][j] > maxP){
         maxP = GP1[i][j];
-        xy[0] = 0;
-        xy[1] = 0;
+        xy[0] = j;
+        xy[1] = i;
       }
     }
   }
@@ -59,14 +60,16 @@ function zetaGo() {
 
     thisGrid[i][j] = id;
 
-    disp(thisGrid);
-
+    //checkCount: the number of places that can become checkmate
     var checkCount = 0, checkmateCount = 0;
     for (var u = 0; u < N; u++) {
       for (var v = 0; v < N; v++) {
-        if (isCheck(thisGrid, u, v, idOp) > 0) console.log(i + " " + j + " " + u + " " + v);
+        if (isCheck(thisGrid, u, v, idOp) > 1) { return BAD_CHOICE; }
+        if (isCheck(thisGrid, u, v, idOp) == 1) { checkCount++; }//console.log(i + " " + j + " " + u + " " + v); }
       }
     }
+
+    return checkCount;
 
     var thisGP1 = new Array(N), thisGP2 = new Array(N); //the gp of this level
     //set GP
@@ -125,11 +128,13 @@ function zetaGo() {
   function isCheck(target, i, j, id) {
     if (target[i][j] != 0) return -1;
 
+    var idOp = (id == 1)? 2: 1;
     var cmCnt = 0; //the number of precheckmates
 
     //pattern of checkmates
     var cm1 = [0, 0, id, id, id, 0];
     var cm2 = [0, id, 0, id, id, 0];
+    var cm3 = [0, id, id, id, id, idOp];
 
     //horizontal, vertical, down left, up right
     var xDir = [1, 0, 1, 1];
@@ -151,8 +156,8 @@ function zetaGo() {
         if (side1grid == cm1[v + 1]) side1Cnt++;
         if (side2grid == cm1[v + 1]) side2Cnt++;
       }
-      if (side1Cnt == 6) { cmCnt++; console.log("check at: " + i + " " + j); }
-      if (side2Cnt == 6) { cmCnt++; console.log("check at: " + i + " " + j); }
+      if (side1Cnt == 6) { cmCnt++; }//console.log("check at: " + i + " " + j); }
+      if (side2Cnt == 6) { cmCnt++; }//console.log("check at: " + i + " " + j); }
 
       //cm2
       side1grid = side2grid = -1;
@@ -166,10 +171,27 @@ function zetaGo() {
         if (side1grid == cm2[v + 2]) side1Cnt++;
         if (side2grid == cm2[v + 2]) side2Cnt++;
       }
-      if (side1Cnt == 6) { cmCnt++; console.log("check at: " + i + " " + j); }
-      if (side2Cnt == 6) { cmCnt++; console.log("check at: " + i + " " + j); }
+      if (side1Cnt == 6) { cmCnt++; }//console.log("check at: " + i + " " + j); }
+      if (side2Cnt == 6) { cmCnt++; }//console.log("check at: " + i + " " + j); }
+
+      //cm3
+      side1grid = side2grid = -1;
+      side1Cnt = side2Cnt = 0;
+      for (var v = 0; v <= 4; v++) {
+        if (i - yDir[d] * v >= 0 && i - yDir[d] * v < N && j - xDir[d] * v >= 0) {
+          side1grid = target[i - yDir[d] * v][j - xDir[d] * v];
+          if (side1grid == cm3[v]) side1Cnt++;
+        }
+        if (i + yDir[d] * v < N && i + yDir[d] * v >= 0 && j + xDir[d] * v < N) {
+          side2grid = target[i + yDir[d] * v][j + xDir[d] * v];
+          if (side2grid == cm3[v]) side2Cnt++;
+        }
+      }
+      if (side1Cnt == 5) { cmCnt++; console.log("check at: " + i + " " + j); }
+      if (side2Cnt == 5) { cmCnt++; console.log("check at: " + i + " " + j); }
 
       //add here for more
+
     }
 
     return cmCnt;
@@ -198,7 +220,7 @@ function zetaGo() {
       //cm
       side1grid = side2grid = -1;
       side1Cnt = side2Cnt = 0;
-      for (var v = 1; v <= 5; v++) {
+      for (var v = 0; v <= 5; v++) {
         if (i - yDir[d] * v >= 0 && i - yDir[d] * v < N && j - xDir[d] * v >= 0)
           side1grid = target[i - yDir[d] * v][j - xDir[d] * v];
         if (i + yDir[d] * v < N && i + yDir[d] * v >= 0 && j + xDir[d] * v < N)
@@ -207,13 +229,11 @@ function zetaGo() {
         if (side1grid == cm1[v]) side1Cnt++;
         if (side2grid == cm1[v]) side2Cnt++;
       }
-      if (side1Cnt == 5) { console.log(i + " " + j); }
-      if (side2Cnt == 5) { console.log(i + " " + j); }
+      if (side1Cnt == 6) { cmCnt++; }//console.log("checkmate at: " + i + " " + j); }
+      if (side2Cnt == 6) { cmCnt++; }//console.log("checkmate at: " + i + " " + j); }
 
       //add here for more
     }
-
-    if (cmCnt != 0) console.log("cmCnt: " + cmCnt);
 
     return cmCnt;
 
@@ -227,23 +247,54 @@ function zetaGo() {
       GP1[i] = new Array(N);
       GP2[i] = new Array(N);
       for (var j = 0; j < N; j++){
+        GP1[i][j] = 0;
+        GP2[i][j] = 0;
+      }
+    }
+
+    for (var i = 0; i < N; i++) {
+      for (var j = 0; j < N; j++){
         if (grid[i][j] == 0) {
           GP1[i][j] = getPriority(grid, i, j, 1);
           GP2[i][j] = getPriority(grid, i, j, 2);
         }
-        else {
-          GP1[i][j] = 0;
-          GP2[i][j] = 0;
+      }
+    }
+    for (var i = 0; i < N; i++) {
+      for (var j = 0; j < N; j++){
+        if (grid[i][j] == 1) {
+          if (i - 1 >= 0 && grid[i - 1][j] == 0) GP1[i - 1][j]++;
+          if (i + 1 < N && grid[i + 1][j] == 0) GP1[i + 1][j]++;
+          if (j - 1 >= 0 && grid[i][j - 1] == 0) GP1[i][j - 1]++;
+          if (j + 1 < N && grid[i][j + 1] == 0) GP1[i][j + 1]++;
+          if (i - 1 >=0 && j - 1 >= 0 && grid[i - 1][j - 1] == 0) GP1[i - 1][j - 1]++;
+          if (i + 1 < N && j - 1 >= 0 && grid[i + 1][j - 1] == 0) GP1[i + 1][j - 1]++;
+          if (i + 1 < N && j + 1 < N && grid[i + 1][j + 1] == 0) GP1[i + 1][j + 1]++;
+          if (i - 1 >=0 && j + 1 < N && grid[i - 1][j + 1] == 0) GP1[i - 1][j + 1]++;
         }
-        // if (grid[i][j] == 1 || grid[i][j] == 2) GP1[i][j] = 0;
-        // else GP1[i][j] = 0;
+        else if (grid[i][j] == 2) {
+          if (i - 1 >= 0) GP2[i - 1][j]++;
+          if (i + 1 < N) GP2[i + 1][j]++;
+          if (j - 1 >= 0) GP2[i][j - 1]++;
+          if (j + 1 < N) GP2[i][j + 1]++;
+          if (i - 1 >=0 && j - 1 >= 0) GP2[i - 1][j - 1]++;
+          if (i + 1 < N && j - 1 >= 0) GP2[i + 1][j - 1]++;
+          if (i + 1 < N && j + 1 < N) GP2[i + 1][j + 1]++;
+          if (i - 1 >=0 && j + 1 < N) GP2[i - 1][j + 1]++;
+        }
       }
     }
   }
 
   function disp(thisGrid) {
+    // for (var i = 0; i < N; i++) {
+    //   console.log(i + "\t" + thisGrid[i]);
+    // }
     for (var i = 0; i < N; i++) {
-      console.log(i + "\t" + thisGrid[i]);
+        console.log(thisGrid[i][0] + "\t" + thisGrid[i][1] + "\t" + thisGrid[i][2] + "\t" + thisGrid[i][3] + "\t" + thisGrid[i][4] + "\t" +
+                    thisGrid[i][5] + "\t" + thisGrid[i][6] + "\t" + thisGrid[i][7] + "\t" + thisGrid[i][8] + "\t" + thisGrid[i][9] + "\t" +
+                    thisGrid[i][10] + "\t" + thisGrid[i][11] + "\t" + thisGrid[i][12] + "\t" + thisGrid[i][13] + "\t" + thisGrid[i][14] + "\t" +
+                    thisGrid[i][15] + "\t" + thisGrid[i][16] + "\t" + thisGrid[i][17] + "\t" + thisGrid[i][18] );
     }
     console.log("\n\n");
   }

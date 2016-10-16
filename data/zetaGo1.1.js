@@ -1,4 +1,4 @@
-function zetaGo() {
+function zetaGoA() {
   var N = 19;
   var PRIORITY_FOUR = 50;
   var PRIORITY_FIVE = 100;

@@ -50,7 +50,7 @@ function gameMain() {
 
   /*AI vs AI 調整中*/
   // var xy_AI = Array(2);
-  // xy_AI = zetaGo();
+  // xy_AI = zetaGoA();
   //
   // placeStone(xy_AI[0], xy_AI[1]);
   // if (isGameOver(xy_AI[0], xy_AI[1])) return;
