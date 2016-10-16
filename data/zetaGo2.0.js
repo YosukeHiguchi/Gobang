@@ -1,43 +1,36 @@
 function zetaGo() {
   var N = 19;
+  var GOOD_CHOICE = 100;
   var BAD_CHOICE = -10;
 
-  //grid-priority
+  //grid priority
   var GP1, GP2;
   var xy = Array(2);
-  var maxP = 0;
 
   setGP();
 
+  var num;
   //human: 1 AI: 2
-  //defence
   for (var i = 0; i < N; i++) {
     for (var j = 0; j < N; j++) {
       if (GP1[i][j] >= 2) { //if the grid-priority of opponent at (i, j) is more than 2
-        //5 is a weight of the result of checkFuture
-        var num = tryPlacingStone(grid, i, j, 2, 1);
+        /*---no damage when 0 for now----*/
+        num = checkFuture(grid, i, j, 2, 1); //try placing stone at (i, j)
         GP1[i][j] += (100 - num * 5);
       }
     }
   }
   disp(GP1);
 
-  //offence
   for (var i = 0; i < N; i++) {
     for (var j = 0; j < N; j++) {
-      if (isCheckmate(grid, i, j, 2) > 0) {
-        xy[0] = j;
-        xy[1] = i;
-        return xy;
-      }
-      if (isCheck(grid, i, j, 2) > 0) {
-        xy[0] = j;
-        xy[1] = i;
-        return xy;
-      }
+      isCheck(grid, i, j, 1);
     }
   }
 
+  //disp(GP1);
+
+  var maxP = 0;
   for (var i = 0; i < N; i++){
     for (var j = 0; j < N; j++) {
       if (GP1[i][j] > maxP){
@@ -50,9 +43,10 @@ function zetaGo() {
 
   return xy;
 
+
 /*---------------------------function----------------------------*/
-  //returns high number when placing at (i, j) is bad
-  function tryPlacingStone(target, i, j, id, level) {
+  //level: 0 for current grid
+  function checkFuture(target, i, j, id, level) {
     var idOp = (id == 1)? 2: 1;
 
     var thisGrid = new Array(N); //the grid of this level
@@ -70,7 +64,7 @@ function zetaGo() {
     var checkCount = 0, checkmateCount = 0;
     for (var u = 0; u < N; u++) {
       for (var v = 0; v < N; v++) {
-        if (isCheck(thisGrid, u, v, idOp) > 1) { return BAD_CHOICE; } //gameover
+        if (isCheck(thisGrid, u, v, idOp) > 1) { return BAD_CHOICE; }
         if (isCheck(thisGrid, u, v, idOp) == 1) { checkCount++; }//console.log(i + " " + j + " " + u + " " + v); }
       }
     }
@@ -96,7 +90,7 @@ function zetaGo() {
 
   }
 
-  //returns base priority of each grid
+  //returns priority Dir at (i, j) on grid(target)
   function getPriority(target, i, j, id) {
     var max = 0;
     //sideCont: if same stones are continued in one line, 1
@@ -117,72 +111,16 @@ function zetaGo() {
         if (i + yDir[d] * v < N && i + yDir[d] * v >= 0 && j + xDir[d] * v < N)
           side2grid = target[i + yDir[d] * v][j + xDir[d] * v];
 
-        if (side1grid == id && side1Cont == 1) cnt++;
+        if (side1grid == id && side1Cont) cnt++;
         else if (side1grid != 0) side1Cont = 0;
-        if (side2grid == id && side2Cont == 1) cnt++;
+        if (side2grid == id && side2Cont) cnt++;
         else if (side2grid != 0) side2Cont = 0;
-
       }
       if (cnt > max) max = cnt;
     }
 
     return max;
   }
-
-///////////////
-function continuousLength(target, i, j, id) {
-  var cnt = 0;
-  var cntSide1, cntSide2, isSide1Cont, isSide2Cont;
-
-  //vertical
-  cntSide1 = cntSide2 = 0;
-  isSide1Cont = isSide2Cont = 1;
-  for (var v = 1; v <= 4; v++) {
-    if (i - v >= 0 && target[i - v][j] == id && isSide1Cont) cntSide1++;
-    else isSide1Cont = 0;
-    if (i + v < N && target[i + v][j] == id && isSide2Cont) cntSide2++;
-    else isSide2Cont = 0;
-  }
-  cnt += cntSide1 + cntSide2 + 1;
-
-  //horizontal
-  cntSide1 = cntSide2 = 0;
-  isSide1Cont = isSide2Cont = 1;
-  for (var v = 1; v <= 4; v++) {
-    if (j - v >= 0 && target[i][j - v] == id && isSide1Cont) cntSide1++;
-    else isSide1Cont = 0;
-    if (j + v < N && target[i][j + v] == id && isSide2Cont) cntSide2++;
-    else isSide2Cont = 0;
-  }
-  cnt += cntSide1 + cntSide2 + 1;
-
-  //down left diagonal
-  cntSide1 = cntSide2 = 0;
-  isSide1Cont = isSide2Cont = 1;
-  for (var v = 1; v <= 4; v++) {
-    if (i - v >= 0 && j - v >=0 && target[i - v][j - v] == id && isSide1Cont) cntSide1++;
-    else isSide1Cont = 0;
-    if (i + v < N && j + v < N && target[i + v][j + v] == id && isSide2Cont) cntSide2++;
-    else isSide2Cont = 0;
-  }
-  cnt += cntSide1 + cntSide2 + 1;
-
-  //up right diagonal
-  cntSide1 = cntSide2 = 0;
-  isSide1Cont = isSide2Cont = 1;
-  for (var v = 1; v <= 4; v++) {
-    if (i - v >= 0 && j + v < N && target[i - v][j + v] == id && isSide1Cont) cntSide1++;
-    else isSide1Cont = 0;
-    if (i + v < N && j - v >= 0 && target[i + v][j - v] == id && isSide2Cont) cntSide2++;
-    else isSide2Cont = 0;
-  }
-  cnt += cntSide1 + cntSide2 + 1;
-
-  return (cnt > 5)? cnt: 0; //magic number
-
-}
-//////////////
-
 
   //returns the number of 王手 that can be obtained when stone(id) is place at (i, j)
   //available when target(i, j) is empty
@@ -196,9 +134,7 @@ function continuousLength(target, i, j, id) {
     //pattern of checkmates
     var cm1 = [0, 0, id, id, id, 0];
     var cm2 = [0, id, 0, id, id, 0];
-    var cm3 = [0, id, id, id, id];
-    var cm4 = [id, 0, id, id, id];
-    var cm5 = [id, id, 0, id, id];
+    var cm3 = [0, id, id, id, id, idOp];
 
     //horizontal, vertical, down left, up right
     var xDir = [1, 0, 1, 1];
@@ -251,40 +187,8 @@ function continuousLength(target, i, j, id) {
           if (side2grid == cm3[v]) side2Cnt++;
         }
       }
-      if (side1Cnt == 5) { cmCnt++; }//console.log("check at: " + i + " " + j); }
-      if (side2Cnt == 5) { cmCnt++; }//console.log("check at: " + i + " " + j); }
-
-      //cm4
-      side1grid = side2grid = -1;
-      side1Cnt = side2Cnt = 0;
-      for (var v = -1; v <= 3; v++) {
-        if (i - yDir[d] * v >= 0 && i - yDir[d] * v < N && j - xDir[d] * v >= 0) {
-          side1grid = target[i - yDir[d] * v][j - xDir[d] * v];
-          if (side1grid == cm3[v + 1]) side1Cnt++;
-        }
-        if (i + yDir[d] * v < N && i + yDir[d] * v >= 0 && j + xDir[d] * v < N) {
-          side2grid = target[i + yDir[d] * v][j + xDir[d] * v];
-          if (side2grid == cm3[v + 1]) side2Cnt++;
-        }
-      }
-      if (side1Cnt == 5) { cmCnt++; }//console.log("check at: " + i + " " + j); }
-      if (side2Cnt == 5) { cmCnt++; }//console.log("check at: " + i + " " + j); }
-
-      //cm5
-      side1grid = side2grid = -1;
-      side1Cnt = side2Cnt = 0;
-      for (var v = -2; v <= 2; v++) {
-        if (i - yDir[d] * v >= 0 && i - yDir[d] * v < N && j - xDir[d] * v >= 0) {
-          side1grid = target[i - yDir[d] * v][j - xDir[d] * v];
-          if (side1grid == cm3[v + 2]) side1Cnt++;
-        }
-        if (i + yDir[d] * v < N && i + yDir[d] * v >= 0 && j + xDir[d] * v < N) {
-          side2grid = target[i + yDir[d] * v][j + xDir[d] * v];
-          if (side2grid == cm3[v + 2]) side2Cnt++;
-        }
-      }
-      if (side1Cnt == 5) { cmCnt++; }//console.log("check at: " + i + " " + j); }
-      if (side2Cnt == 5) { cmCnt++; }//console.log("check at: " + i + " " + j); }
+      if (side1Cnt == 5) { cmCnt++; console.log("check at: " + i + " " + j); }
+      if (side2Cnt == 5) { cmCnt++; console.log("check at: " + i + " " + j); }
 
       //add here for more
 
@@ -348,16 +252,14 @@ function continuousLength(target, i, j, id) {
       }
     }
 
-    //base priority
     for (var i = 0; i < N; i++) {
       for (var j = 0; j < N; j++){
         if (grid[i][j] == 0) {
-          GP1[i][j] = getPriority(grid, i, j, 1) + continuousLength(grid, i, j, 1);
-          GP2[i][j] = getPriority(grid, i, j, 2) + continuousLength(grid, i, j, 2);
+          GP1[i][j] = getPriority(grid, i, j, 1);
+          GP2[i][j] = getPriority(grid, i, j, 2);
         }
       }
     }
-    //increase priority around the stone
     for (var i = 0; i < N; i++) {
       for (var j = 0; j < N; j++){
         if (grid[i][j] == 1) {

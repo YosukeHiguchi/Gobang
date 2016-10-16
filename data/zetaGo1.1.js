@@ -26,13 +26,13 @@ function zetaGoA() {
         gridP[i][j] += getPriority(i, j, 1);
     }
   }
+  disp();
   for (var i = 0; i < N; i++){
     for (var j = 0; j < N; j++) {
       if (grid[i][j] == 0)
         gridP[i][j] += getPriority(i, j, 2);
     }
   }
-  //disp();
 
   var maxP = 0;
   for (var i = 0; i < N; i++){
