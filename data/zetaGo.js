@@ -1,5 +1,5 @@
 function zetaGo(myID) {
-  var N = 19;
+  var N = 15;
   var BAD_CHOICE = -10;
 
   var opID = (myID == 1)? 2: 1;

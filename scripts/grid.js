@@ -22,17 +22,23 @@ var grid = [
 
 //console grid
 function dumpGrid() {
-  for (var i = 0; i < 19; i++) {
-    console.log(i + "\n" + grid[i]);
+  for (var i = 0; i < N; i++) {
+    console.log(grid[i]);
   }
 }
 
 //draw stone based on grid
 function updateGrid() {
   ctx.clearRect(0, 0, W, H);
-  for (var y_grid = 0; y_grid < 19; y_grid++) {
-    for (var x_grid = 0; x_grid < 19; x_grid++) {
-      drawStone(x_grid, y_grid, grid[y_grid][x_grid], 0, 0);
+  if (N == 15) {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+    ctx.fillRect(0, 0, W, H);
+    ctx.clearRect(60, 60, 507, 507);
+  }
+
+  for (var y_grid = 0; y_grid < N; y_grid++) {
+    for (var x_grid = 0; x_grid < N; x_grid++) {
+      drawStone(x_grid + adjust_grid, y_grid + adjust_grid, grid[y_grid][x_grid], 0, 0);
     }
   }
 }
