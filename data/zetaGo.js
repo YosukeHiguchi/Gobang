@@ -7,10 +7,11 @@ function zetaGo() {
 
   setGP();
 
+  //human: 1 AI: 2
   for (var i = 0; i < N; i++) {
     for (var j = 0; j < N; j++) {
-      if (GP1[i][j] >= 2) {
-        checkFuture(grid, i, j, 1);
+      if (GP1[i][j] >= 2) { //if the grid-priority of opponent at (i, j) is more than 2
+        checkFuture(grid, i, j, 2, 2); //try placing stone at (i, j)
       }
     }
   }
@@ -22,7 +23,7 @@ function zetaGo() {
         isCheck(grid, i, j, 1);
     }
   }
-  disp(GP1);
+  //disp(GP1);
 
 
 
@@ -43,19 +44,47 @@ function zetaGo() {
 
 
 /*---------------------------function----------------------------*/
-  function checkFuture(target, i, j, id) {
-    var thisGrid = new Array(N);
+  //level: 0 for current grid
+  function checkFuture(target, i, j, id, level) {
+    var idOp = (id == 1)? 2: 1;
+
+    var thisGrid = new Array(N); //the grid of this level
+    //set grid
     for (var u = 0; u < N; u++) {
       thisGrid[u] = new Array(N);
       for (var v = 0; v < N; v++){
         thisGrid[u][v] = target[u][v];
       }
     }
+
     thisGrid[i][j] = id;
 
-    var thisGP1, thisGP2;
+    disp(thisGrid);
 
-    //disp(thisGrid);
+    var checkCount = 0, checkmateCount = 0;
+    for (var u = 0; u < N; u++) {
+      for (var v = 0; v < N; v++) {
+        if (isCheck(thisGrid, u, v, idOp) > 0) console.log(i + " " + j + " " + u + " " + v);
+      }
+    }
+
+    var thisGP1 = new Array(N), thisGP2 = new Array(N); //the gp of this level
+    //set GP
+    for (var u = 0; u < N; u++) {
+      thisGP1[u] = new Array(N);
+      thisGP2[u] = new Array(N);
+      for (var v = 0; v < N; v++){
+        if (thisGrid[u][v] == 0) {
+          thisGP1[u][v] = getPriority(thisGrid, u, v, 1);
+          thisGP2[u][v] = getPriority(thisGrid, u, v, 2);
+        }
+        else {
+          thisGP1[u][v] = 0;
+          thisGP2[u][v] = 0;
+        }
+      }
+    }
+
   }
 
   //returns priority Dir at (i, j) on grid(target)
@@ -193,29 +222,21 @@ function zetaGo() {
   //-1 for stone placed grids
   function setGP(){
     GP1 = new Array(N);
-    for (var i = 0; i < N; i++) {
-      GP1[i] = new Array(N);
-      for (var j = 0; j < N; j++){
-        if (grid[i][j] == 1 || grid[i][j] == 2) GP1[i][j] = 0;
-        else GP1[i][j] = 0;
-      }
-    }
-
     GP2 = new Array(N);
     for (var i = 0; i < N; i++) {
+      GP1[i] = new Array(N);
       GP2[i] = new Array(N);
       for (var j = 0; j < N; j++){
-        if (grid[i][j] == 1 || grid[i][j] == 2) GP2[i][j] = 0;
-        else GP2[i][j] = 0;
-      }
-    }
-
-    for (var i = 0; i < N; i++){
-      for (var j = 0; j < N; j++) {
         if (grid[i][j] == 0) {
           GP1[i][j] = getPriority(grid, i, j, 1);
           GP2[i][j] = getPriority(grid, i, j, 2);
         }
+        else {
+          GP1[i][j] = 0;
+          GP2[i][j] = 0;
+        }
+        // if (grid[i][j] == 1 || grid[i][j] == 2) GP1[i][j] = 0;
+        // else GP1[i][j] = 0;
       }
     }
   }
