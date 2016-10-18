@@ -11,6 +11,17 @@
     <div id="goban"></div>
     <canvas id="canvas" width="627px" height="627px"></canvas>
   </div>
+  <form name="menu">
+    <p>Size:
+      <label><input type="radio" id="size_fifteen" name="grid_size" value="15" onchange="onCheckSize()" checked/>15&nbsp</label>
+      <label><input type="radio" id="size_nineteen" name="grid_size" value="19" onchange="onCheckSize()"/>19</label>
+    </p>
+    <p>First:
+      <label><input type="radio" id="player_human" name="first_player" value="You" onchange="onCheckSize()" checked/>You&nbsp</label>
+      <label><input type="radio" id="player_AI" name="first_player" value="AI" onchange="onCheckSize()"/>AI(zetaGo)</label>
+    </p>
+    <input type="button" value="Start" style="width: 100px;" onclick="gameStart()"/>
+  </form>
   <div id="result"></div>
 </body>
 </html>

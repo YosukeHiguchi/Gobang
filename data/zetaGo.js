@@ -1,6 +1,6 @@
 function zetaGo(myID) {
   var N = 15;
-  var BAD_CHOICE = -10;
+  var BAD_CHOICE = 100;
 
   var opID = (myID == 1)? 2: 1;
   var GP; //grid-priority
@@ -16,6 +16,20 @@ function zetaGo(myID) {
       }
     }
   }
+  var opCheckmate = false;
+  for (var i = 0; i < N; i++) {
+    for (var j = 0; j < N; j++) {
+      if (checkmate(grid, i, j, opID)) opCheckmate = true;
+    }
+  }
+  for (var i = 0; i < N && !opCheckmate; i++) {
+    for (var j = 0; j < N; j++) {
+      if (isCheckmate(grid, i, j, myID) > 0) {
+        xy[0] = j;  xy[1] = i;
+        return xy;
+      }
+    }
+  }
 
   setGP();
 
@@ -25,7 +39,7 @@ function zetaGo(myID) {
       if (GP[i][j] >= 2) { //if the grid-priority of opponent at (i, j) is more than 2
         //5 is a weight of the result of checkFuture
         var num = tryPlacingStone(grid, i, j, myID, 1);
-        GP[i][j] += (100 - num * 5);
+        GP[i][j] += (100 - num * 6);
       }
     }
   }
@@ -86,6 +100,56 @@ function zetaGo(myID) {
         if (isCheck(thisGrid, u, v, opID) == 1) { checkCount++; }
       }
     }
+
+    ////
+    if (checkCount == 0 && target == 1) {
+      //place opID
+      for (var u = 0; u < N; u++) {
+        for (var v = 0; v < N; v++) {
+          /*=======================================*/
+          if (thisGrid[u][v] == 0) {
+            thisGrid[u][v] = opID;
+
+            var thisGP = new Array(N);
+            for (var i = 0; i < N; i++) {
+              thisGP[i] = new Array(N);
+              for (var j = 0; j < N; j++){
+                thisGP[i][j] = 0; //initialize with 0
+              }
+            }
+
+            //base priority
+            for (var i = 0; i < N; i++) {
+              for (var j = 0; j < N; j++){
+                if (grid[i][j] == 0) {
+                  thisGP[i][j] = getPriority(grid, i, j, opID) + continuousLength(grid, i, j, opID);
+                }
+              }
+            }
+            //increment priority around the stone
+            for (var i = 0; i < N; i++) {
+              for (var j = 0; j < N; j++){
+                if (grid[i][j] == opID) {
+                  if (i - 1 >= 0 && grid[i - 1][j] == 0) thisGP[i - 1][j]++;
+                  if (i + 1 < N && grid[i + 1][j] == 0) thisGP[i + 1][j]++;
+                  if (j - 1 >= 0 && grid[i][j - 1] == 0) thisGP[i][j - 1]++;
+                  if (j + 1 < N && grid[i][j + 1] == 0) thisGP[i][j + 1]++;
+                  if (i - 1 >=0 && j - 1 >= 0 && grid[i - 1][j - 1] == 0) thisGP[i - 1][j - 1]++;
+                  if (i + 1 < N && j - 1 >= 0 && grid[i + 1][j - 1] == 0) thisGP[i + 1][j - 1]++;
+                  if (i + 1 < N && j + 1 < N && grid[i + 1][j + 1] == 0) thisGP[i + 1][j + 1]++;
+                  if (i - 1 >=0 && j + 1 < N && grid[i - 1][j + 1] == 0) thisGP[i - 1][j + 1]++;
+                }
+              }
+            }
+
+
+
+          }
+          /*=======================================*/
+        }
+      }
+    }
+    ////
 
     return checkCount;
 

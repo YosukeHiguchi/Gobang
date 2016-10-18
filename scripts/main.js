@@ -1,7 +1,7 @@
-var id = 2; //1: black 2:white
+var id = 1; //1: black 2:white
 var N = 15;
 var cursorX = -1, cursorY = -1;
-var isGameAvailable = true;
+var isGameAvailable = false;
 
 //update boards when cursor moves
 document.onmousemove = function (e) {
@@ -27,7 +27,7 @@ function gameMain() {
       x_grid < N + adjust_grid && y_grid < N + adjust_grid && grid[y_grid - adjust_grid][x_grid - adjust_grid] == 0) {
 
     placeStone(x_grid - adjust_grid, y_grid - adjust_grid);
-    if (isGameOver(x_grid, y_grid)) return;
+    if (isGameOver(x_grid - adjust_grid, y_grid - adjust_grid)) return;
     (id == 1)? id = 2: id = 1;
 
     /*---AI----*/
